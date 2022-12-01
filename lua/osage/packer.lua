@@ -39,6 +39,7 @@ return require("packer").startup(function()
         "windwp/nvim-autopairs",
         config = function() require("nvim-autopairs").setup {} end
     }
+    use "ThePrimeagen/harpoon"
     -- use {
     --     "nvim-tree/nvim-tree.lua",
     --     requires = {
