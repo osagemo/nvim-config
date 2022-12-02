@@ -3,6 +3,9 @@ if (not status) then return end
 
 local _, lspconfig_util = pcall(require, "lspconfig.util")
 local protocol = require('vim.lsp.protocol')
+local has = vim.fn.has
+local is_win = has "win32" == 1
+
 -- Make runtime files discoverable to the server
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
@@ -132,11 +135,49 @@ nvim_lsp.tsserver.setup {
     capabilities = capabilities,
 }
 
-nvim_lsp.html.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    cmd = { "vscode-css-language-server.cmd", "--stdio" }
-}
+if is_win then
+    nvim_lsp.html.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        cmd = { "vscode-css-language-server.cmd", "--stdio" }
+    }
+    nvim_lsp.eslint.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        cmd = { "vscode-eslint-language-server.cmd", "--stdio" },
+        root_dir = lspconfig_util.root_pattern(
+            ".eslintrc",
+            ".eslintrc.js",
+            ".eslintrc.cjs",
+            ".eslintrc.yaml",
+            ".eslintrc.yml",
+            ".eslintrc.json",
+            "package.json",
+            ".git"
+        ),
+        settings = { format = false },
+    }
+else
+    nvim_lsp.html.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
+    nvim_lsp.eslint.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        root_dir = lspconfig_util.root_pattern(
+            ".eslintrc",
+            ".eslintrc.js",
+            ".eslintrc.cjs",
+            ".eslintrc.yaml",
+            ".eslintrc.yml",
+            ".eslintrc.json",
+            "package.json",
+            ".git"
+        ),
+        settings = { format = false },
+    }
+end
 
 nvim_lsp.gopls.setup {
     on_attach = on_attach,
@@ -158,33 +199,10 @@ nvim_lsp.astro.setup {
     capabilities = capabilities
 }
 
-nvim_lsp.astro.setup {
-    on_attach = on_attach,
-    capabilities = capabilities
-}
 
-nvim_lsp.eslint.setup {
+nvim_lsp.csharp_ls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
-    cmd = { "vscode-eslint-language-server.cmd", "--stdio" },
-    root_dir = lspconfig_util.root_pattern(
-        ".eslintrc",
-        ".eslintrc.js",
-        ".eslintrc.cjs",
-        ".eslintrc.yaml",
-        ".eslintrc.yml",
-        ".eslintrc.json",
-        "package.json",
-        ".git"
-    ),
-    settings = { format = false },
-}
-
-local omnisharp_dll = [[C:\tools\omnisharp\OmniSharp.dll]]
-nvim_lsp.omnisharp.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    cmd = { "dotnet", omnisharp_dll }
 }
 
 protocol.CompletionItemKind = {

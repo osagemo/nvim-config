@@ -2,6 +2,8 @@ local status, null_ls = pcall(require, "null-ls")
 if (not status) then return end
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+local has = vim.fn.has
+local is_win = has "win32" == 1
 
 local lsp_formatting = function(bufnr)
     if vim.lsp.buf.format then -- >=0.8
@@ -18,10 +20,17 @@ local lsp_formatting = function(bufnr)
     end
 end
 
+local cmd 
+if is_win then
+    cmd = "prettierd.CMD" 
+else 
+   cmd = "prettierd"
+end
+
 null_ls.setup {
     sources = {
         null_ls.builtins.formatting.prettierd.with({
-            command = "prettierd.CMD",
+            command = cmd, 
             env = {
                 PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/.config/nvim/utils/linter-config/.prettierrc.json"),
             },
