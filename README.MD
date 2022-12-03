@@ -11,10 +11,10 @@ This configuration was created on a windows machine.
 Install
 1. Install packer: https://github.com/wbthomason/packer.nvim
 2. Install language servers:
-   `sudo npm install -g typescript typescript-language-server
-   sudo npm install -g @tailwindcss/language-server
-   sudo npm install -g @astrojs/language-server
-   sudo npm install -g @fsouza/prettierd`
-3. Install a patched font: https://www.nerdfonts.com/font-downloads e.g.
- `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"`
+   `sudo npm install -g typescript typescript-language-server`
+   `sudo npm install -g @tailwindcss/language-server`
+   `sudo npm install -g @astrojs/language-server`
+   `sudo npm install -g @fsouza/prettierd`
+3. Install a patched font: https://www.nerdfonts.com/font-downloads
 4. Start nvim, run :PackerSync and :TSUpdate
+

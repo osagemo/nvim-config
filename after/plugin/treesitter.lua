@@ -1,19 +1,3 @@
--- require("nvim-web-devicons").setup()
--- require("nvim-tree").setup({
---     renderer = {
---         git = {
---             enable = true,
---             show_on_dirs = true,
---         },
---         icons = {
---             show = {
---                 folder = true,
---                 git = true,
---             }
---         }
---     }
--- })
-
 require 'nvim-treesitter.configs'.setup {
     ensure_installed = "all",
     sync_install = false,

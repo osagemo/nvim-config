@@ -3,6 +3,17 @@ local noremap = require("osage.keymap").noremap
 local vnoremap = require("osage.keymap").vnoremap
 local inoremap = require("osage.keymap").inoremap
 local silent = { silent = true }
+local has = vim.fn.has
+local is_win = has "win32" == 1
+
+-- Different \ binding on my linux US-ANSI keyboard layout for now
+local commentKey
+if not is_win then
+    commentKey = "<C-_>"
+    vim.g.mapleader = '<'
+else
+    commentKey = "<C-G>"
+end
 
 nnoremap("<leader>op", "<cmd>Telescope file_browser<CR>")
 nnoremap('<C-p>',
@@ -24,9 +35,9 @@ nnoremap("<C-i>", "<C-i>zz")
 nnoremap("}", "}zz")
 nnoremap("{", "{zz")
 
-inoremap("<C-G>", "<C-o><cmd>CommentToggle<CR><C-o>A")
-nnoremap("<C-G>", "<cmd>CommentToggle<CR>")
-vnoremap("<C-G>", ":<C-u>call CommentOperator(visualmode())<CR>")
+inoremap(commentKey, "<C-o><cmd>CommentToggle<CR><C-o>A")
+nnoremap(commentKey, "<cmd>CommentToggle<CR>")
+vnoremap(commentKey, ":<C-u>call CommentOperator(visualmode())<CR>")
 -- nnoremap("<C-E>", "<cmd>NvimTreeToggle<CR>")
 
 -- Tabs
@@ -55,7 +66,7 @@ nnoremap('<C-w><up>', ':resize +10<cr>')
 nnoremap("<leader>a", function() require("harpoon.mark").add_file() end, silent)
 nnoremap("<C-e>", function() require("harpoon.ui").toggle_quick_menu() end, silent)
 
-nnoremap("<leader>u", function() require("harpoon.ui").nav_file(1) end, silent)
-nnoremap("<leader>i", function() require("harpoon.ui").nav_file(2) end, silent)
-nnoremap("<leader>o", function() require("harpoon.ui").nav_file(3) end, silent)
-nnoremap("<leader>p", function() require("harpoon.ui").nav_file(4) end, silent)
+nnoremap("<leader>1", function() require("harpoon.ui").nav_file(1) end, silent)
+nnoremap("<leader>2", function() require("harpoon.ui").nav_file(2) end, silent)
+nnoremap("<leader>3", function() require("harpoon.ui").nav_file(3) end, silent)
+nnoremap("<leader>4", function() require("harpoon.ui").nav_file(4) end, silent)
