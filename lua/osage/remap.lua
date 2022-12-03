@@ -15,7 +15,7 @@ else
     commentKey = "<C-G>"
 end
 
-nnoremap("<leader>op", "<cmd>Telescope file_browser<CR>")
+nnoremap("<leader>op", "<cmd>Telescope file_browser path=%:p:h<CR>")
 nnoremap('<C-p>',
     "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>")
 -- Hidden files
