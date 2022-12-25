@@ -16,24 +16,34 @@ else
 end
 
 nnoremap("<leader>op", "<cmd>Telescope file_browser path=%:p:h<CR>")
+-- Disable
+nnoremap("Q", "<nop>")
+
+-- Telescope
+nnoremap("<leader>op", "<cmd>Telescope file_browser<CR>")
 nnoremap('<C-p>',
     "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>")
 -- Hidden files
-nnoremap("<leader>hp", "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>")
-
+nnoremap("<leader>ip", "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>")
 nnoremap('<C-F>', "<cmd>Telescope live_grep<cr>")
+
+-- Clipboard yank/paste
 noremap("<Leader>y", '"*y')
 noremap("<Leader>p", '"*p')
-nnoremap("<Leader>=", "gg=G<C-o>")
 
--- Center screen on next/previous selection.
+-- Center screen after various navigations.
 nnoremap("n", "nzz")
 nnoremap("N", "Nzz")
--- Last and next jump should center too.
 nnoremap("<C-o>", "<C-o>zz")
 nnoremap("<C-i>", "<C-i>zz")
 nnoremap("}", "}zz")
 nnoremap("{", "{zz")
+nnoremap("<C-u>", "<C-u>zz")
+nnoremap("<C-d>", "<C-d>zz")
+
+-- Move visual selection
+vnoremap("J", ":m '>+1<CR>gv=gv")
+vnoremap("K", ":m '<-2<CR>gv=gv")
 
 inoremap(commentKey, "<C-o><cmd>CommentToggle<CR><C-o>A")
 nnoremap(commentKey, "<cmd>CommentToggle<CR>")
@@ -66,7 +76,23 @@ nnoremap('<C-w><up>', ':resize +10<cr>')
 nnoremap("<leader>a", function() require("harpoon.mark").add_file() end, silent)
 nnoremap("<C-e>", function() require("harpoon.ui").toggle_quick_menu() end, silent)
 
-nnoremap("<leader>1", function() require("harpoon.ui").nav_file(1) end, silent)
-nnoremap("<leader>2", function() require("harpoon.ui").nav_file(2) end, silent)
-nnoremap("<leader>3", function() require("harpoon.ui").nav_file(3) end, silent)
-nnoremap("<leader>4", function() require("harpoon.ui").nav_file(4) end, silent)
+nnoremap("<leader>h", function() require("harpoon.ui").nav_file(1) end, silent)
+nnoremap("<leader>j", function() require("harpoon.ui").nav_file(2) end, silent)
+nnoremap("<leader>k", function() require("harpoon.ui").nav_file(3) end, silent)
+nnoremap("<leader>l", function() require("harpoon.ui").nav_file(4) end, silent)
+
+-- Temporarily disabled
+-- vim.keymap.set("n", "<leader>n>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+
+-- Format
+nnoremap("<Leader>=", "gg=G<C-o>")
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+
+-- Quickfix list
+vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+-- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+
+-- Replace all occurrences in file
+vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])

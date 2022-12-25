@@ -18,4 +18,3 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.mouse = 'a'
 vim.o.undofile = true
-
