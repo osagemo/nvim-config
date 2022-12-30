@@ -2,9 +2,8 @@ local nnoremap = require("osage.keymap").nnoremap
 local noremap = require("osage.keymap").noremap
 local vnoremap = require("osage.keymap").vnoremap
 local inoremap = require("osage.keymap").inoremap
-local silent = { silent = true }
-local has = vim.fn.has
-local is_win = has "win32" == 1
+local is_win = require("osage.util").is_win
+local silent = require("osage.util").silent
 
 -- Different \ binding on my linux US-ANSI keyboard layout for now
 local commentKey
@@ -80,8 +79,9 @@ nnoremap("<leader>j", function() require("harpoon.ui").nav_file(2) end, silent)
 nnoremap("<leader>k", function() require("harpoon.ui").nav_file(3) end, silent)
 nnoremap("<leader>l", function() require("harpoon.ui").nav_file(4) end, silent)
 
--- Temporarily disabled
--- vim.keymap.set("n", "<leader>n>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+if not is_win then
+    vim.keymap.set("n", "<leader>n>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+end
 
 -- Format
 nnoremap("<Leader>=", "gg=G<C-o>")

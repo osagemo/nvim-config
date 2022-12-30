@@ -3,8 +3,7 @@ if (not status) then return end
 
 local _, lspconfig_util = pcall(require, "lspconfig.util")
 local protocol = require('vim.lsp.protocol')
-local has = vim.fn.has
-local is_win = has "win32" == 1
+local is_win = require("osage.util").is_win
 
 -- Make runtime files discoverable to the server
 local runtime_path = vim.split(package.path, ';')
