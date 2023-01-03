@@ -9,12 +9,13 @@ This configuration was created on a windows machine.
 - [ ] Experiment with debuggers
 
 Install
-1. Install packer: https://github.com/wbthomason/packer.nvim
-2. Install language servers:
+1. (Windows) Install mingw `choco install mingw`
+2. Install packer: https://github.com/wbthomason/packer.nvim
+3. Install language servers:
    `sudo npm install -g typescript typescript-language-server`
    `sudo npm install -g @tailwindcss/language-server`
    `sudo npm install -g @astrojs/language-server`
    `sudo npm install -g @fsouza/prettierd`
-3. Install a patched font: https://www.nerdfonts.com/font-downloads
-4. Start nvim, run :PackerSync and :TSUpdate
+4. Install a patched font: https://www.nerdfonts.com/font-downloads
+5. Start nvim, run :PackerSync and :TSUpdate
 
