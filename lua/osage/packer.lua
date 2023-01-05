@@ -11,6 +11,7 @@ return require("packer").startup(function()
     use "nvim-telescope/telescope.nvim"
     use "nvim-telescope/telescope-media-files.nvim"
     use "nvim-telescope/telescope-file-browser.nvim"
+    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
     use "dinhhuy258/git.nvim" -- For git blame & browse
     use "neovim/nvim-lspconfig"
     use "hrsh7th/cmp-nvim-lsp"

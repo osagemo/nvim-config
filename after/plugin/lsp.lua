@@ -201,7 +201,6 @@ nvim_lsp.astro.setup {
     capabilities = capabilities
 }
 
-
 nvim_lsp.csharp_ls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
