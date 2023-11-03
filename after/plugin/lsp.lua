@@ -46,7 +46,7 @@ local on_attach = function(_, bufnr)
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
     -- gd currently mapped by lspsaga instead
-    --nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
     nmap('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
     nmap('gr', require('telescope.builtin').lsp_references)
     nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
