@@ -1,90 +1,69 @@
-local nnoremap = require("osage.keymap").nnoremap
-local noremap = require("osage.keymap").noremap
-local vnoremap = require("osage.keymap").vnoremap
-local inoremap = require("osage.keymap").inoremap
 local is_win = require("osage.util").is_win
-local silent = require("osage.util").silent
 
 -- Different \ binding on my linux US-ANSI keyboard layout for now
 local commentKey
 if not is_win then
-    commentKey = "<C-_>"
-    vim.g.mapleader = '<'
+	commentKey = "<C-_>"
+	vim.g.mapleader = '<'
 else
-    commentKey = "<C-G>"
+	commentKey = "<C-G>"
 end
 
 -- Disable
-nnoremap("Q", "<nop>")
+vim.keymap.set("n","Q", "<nop>")
 
--- Telescope
-nnoremap("<leader>op", "<cmd>Telescope file_browser path=%:p:h<CR>")
-nnoremap('<C-p>',
-    "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>")
--- Hidden files
-nnoremap("<leader>ip", "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>")
-nnoremap('<C-F>', "<cmd>Telescope live_grep<cr>")
+-- Ex
+vim.keymap.set("n", "<Leader>o", vim.cmd.Ex)
 
 -- Clipboard yank/paste
-noremap("<Leader>y", '"*y')
-noremap("<Leader>p", '"*p')
+vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({"n", "x", "s", "o"}, "<leader>p", [["+p]])
 
--- Center screen after various navigations.
-nnoremap("n", "nzz")
-nnoremap("N", "Nzz")
-nnoremap("<C-o>", "<C-o>zz")
-nnoremap("<C-i>", "<C-i>zz")
-nnoremap("}", "}zz")
-nnoremap("{", "{zz")
-nnoremap("<C-u>", "<C-u>zz")
-nnoremap("<C-d>", "<C-d>zz")
+-- Center
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("n","<C-o>", "<C-o>zz")
+vim.keymap.set("n","<C-i>", "<C-i>zz")
+vim.keymap.set("n","}", "}zz")
+vim.keymap.set("n","{", "{zz")
 
--- Move visual selection
-vnoremap("J", ":m '>+1<CR>gv=gv")
-vnoremap("K", ":m '<-2<CR>gv=gv")
-
-inoremap(commentKey, "<C-o><cmd>CommentToggle<CR><C-o>A")
-nnoremap(commentKey, "<cmd>CommentToggle<CR>")
-vnoremap(commentKey, ":<C-u>call CommentOperator(visualmode())<CR>")
--- nnoremap("<C-E>", "<cmd>NvimTreeToggle<CR>")
+-- Comments
+vim.keymap.set("i",commentKey, "<C-o><cmd>CommentToggle<CR><C-o>A")
+vim.keymap.set("n",commentKey, "<cmd>CommentToggle<CR>")
+vim.keymap.set("v",commentKey, ":<C-u>call CommentOperator(visualmode())<CR>")
+-- vim.keymap.set("n","<C-E>", "<cmd>NvimTreeToggle<CR>")
 
 -- Tabs
-nnoremap('te', ':tabedit<cr>')
-nnoremap('tn', ':tabn<cr>')
-nnoremap('tc', ':tabc<cr>')
+vim.keymap.set("n",'te', ':tabedit<cr>')
+vim.keymap.set("n",'tn', ':tabn<cr>')
+vim.keymap.set("n",'tc', ':tabc<cr>')
 
 -- Split window
-nnoremap('ss', ':split<Return><C-w>w')
-nnoremap('sv', ':vsplit<Return><C-w>w')
+vim.keymap.set("n",'ss', ':split<Return><C-w>w')
+vim.keymap.set("n",'sv', ':vsplit<Return><C-w>w')
 
 -- Move window
-nnoremap('<Space>', '<C-w>w')
+vim.keymap.set("n",'<Space>', '<C-w>w')
 vim.keymap.set('', 'sh', '<C-w>h')
 vim.keymap.set('', 'sk', '<C-w>k')
 vim.keymap.set('', 'sj', '<C-w>j')
 vim.keymap.set('', 'sl', '<C-w>l')
 
 -- Resize window
-nnoremap('<C-w><left>', ':vertical resize -10<cr>')
-nnoremap('<C-w><right>', ':vertical resize +10<cr>')
-nnoremap('<C-w><down>', ':resize -10<cr>')
-nnoremap('<C-w><up>', ':resize +10<cr>')
+vim.keymap.set("n",'<C-w><left>', ':vertical resize -10<cr>')
+vim.keymap.set("n",'<C-w><right>', ':vertical resize +10<cr>')
+vim.keymap.set("n",'<C-w><down>', ':resize -10<cr>')
+vim.keymap.set("n",'<C-w><up>', ':resize +10<cr>')
 
--- Harpoon
-nnoremap("<leader>a", function() require("harpoon.mark").add_file() end, silent)
-nnoremap("<C-e>", function() require("harpoon.ui").toggle_quick_menu() end, silent)
-
-nnoremap("<leader>h", function() require("harpoon.ui").nav_file(1) end, silent)
-nnoremap("<leader>j", function() require("harpoon.ui").nav_file(2) end, silent)
-nnoremap("<leader>k", function() require("harpoon.ui").nav_file(3) end, silent)
-nnoremap("<leader>l", function() require("harpoon.ui").nav_file(4) end, silent)
-
-if not is_win then
-    vim.keymap.set("n", "<leader>n>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-end
+-- Move visual selection
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 -- Format
-nnoremap("<Leader>=", "gg=G<C-o>")
+vim.keymap.set("n","<Leader>=", "gg=G<C-o>")
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- Quickfix list

@@ -1,83 +1,38 @@
-require 'nvim-treesitter.configs'.setup {
-    ensure_installed = "all",
-    sync_install = false,
-    indent = {
-        enable = true,
-        disable = { 'python', 'c' }, -- these and some other langs don't work well,
-    },
-    highlight = {
-        enable = false,
-        -- additional_vim_regex_highlighting = false,
-    },
-    context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
-    },
-    autotag = {
-        enable = true,
-    }
-}
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"
+  ensure_installed = { "vimdoc", "javascript", "typescript", "c", "lua", "go" },
+  ensure_installed = { 
+	  "c", 
+	  "lua", 
+	  "vim",
+	  "vimdoc",
+	  "query",
+	  "javascript",
+	  "typescript",
+	  "dockerfile",
+	  "go",
+	  "css",
+	  "html",
+	  "json",
+	  "tsx",
+	  "yaml"
+  },
 
--- Default values initially
-require 'treesitter-context'.setup {
-    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-    max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-    trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-    min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-    patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
-        -- For all filetypes
-        -- Note that setting an entry here replaces all other patterns for this entry.
-        -- By setting the 'default' entry below, you can control which nodes you want to
-        -- appear in the context window.
-        default = {
-            'class',
-            'function',
-            'method',
-            'for',
-            'while',
-            'if',
-            'switch',
-            'case',
-            'interface',
-            'struct',
-            'enum',
-        },
-        -- Patterns for specific filetypes
-        tex = {
-            'chapter',
-            'section',
-            'subsection',
-            'subsubsection',
-        },
-        rust = {
-            'impl_item',
-        },
-        markdown = {
-            'section',
-        },
-        json = {
-            'pair',
-        },
-        typescript = {
-            'export_statement',
-        },
-        yaml = {
-            'block_mapping_pair',
-        },
-    },
-    exact_patterns = {
-        -- Example for a specific filetype with Lua patterns
-        -- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
-        -- exactly match "impl_item" only)
-        -- rust = true,
-    },
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
 
-    -- [!] The options below are exposed but shouldn't require your attention,
-    --     you can safely ignore them.
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
 
-    zindex = 20, -- The Z-index of the context window
-    mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
-    -- Separator between context and content. Should be a single character string, like '-'.
-    -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-    separator = nil,
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
 }

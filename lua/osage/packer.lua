@@ -1,45 +1,34 @@
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
-return require("packer").startup(function()
+return require('packer').startup(function(use)
     -- Packer can manage itself
-    use "wbthomason/packer.nvim"
-    use "nvim-lua/plenary.nvim" -- Requirement for multiple plugins
-    use "nvim-lua/popup.nvim" -- Requirement for multiple plugins
-    use "folke/tokyonight.nvim"
-    use "lewis6991/gitsigns.nvim"
-    use "nvim-telescope/telescope.nvim"
-    use "nvim-telescope/telescope-media-files.nvim"
-    use "nvim-telescope/telescope-file-browser.nvim"
-    -- use { 'nvim-telescope/telescope-fzf-native.nvim',
-    --     run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-    use "dinhhuy258/git.nvim" -- For git blame & browse
-    use "neovim/nvim-lspconfig"
-    use "hrsh7th/cmp-nvim-lsp"
-    use "hrsh7th/cmp-buffer"
-    use "hrsh7th/nvim-cmp"
-    use "jose-elias-alvarez/null-ls.nvim"
-    use "onsails/lspkind-nvim" -- vscode-like pictograms
-    -- use "glepnir/lspsaga.nvim" -- LSP UIs
-    use "terrortylor/nvim-comment"
-    use 'JoosepAlviste/nvim-ts-context-commentstring'
-    use "L3MON4D3/LuaSnip"
-    use "rafamadriz/friendly-snippets"
-    use("saadparwaiz1/cmp_luasnip")
-    use("nvim-treesitter/nvim-treesitter", {
-        run = ":TSUpdate"
-    })
-    use("romgrk/nvim-treesitter-context")
+    use 'wbthomason/packer.nvim'
     use {
-        'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+        'nvim-telescope/telescope.nvim', tag = '0.1.4',
+        -- or                            , branch = '0.1.x',
+        requires = { {'nvim-lua/plenary.nvim'} }
     }
-    use "windwp/nvim-ts-autotag"
+    use({ 'rose-pine/neovim', as = 'rose-pine' })
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+    use 'theprimeagen/harpoon'
+    use 'mbbill/undotree'
+
     use {
-        "windwp/nvim-autopairs",
-        config = function() require("nvim-autopairs").setup {} end
+        'VonHeikemen/lsp-zero.nvim',
+        branch = 'v3.x',
+        requires = {
+            {'williamboman/mason.nvim'},
+            {'williamboman/mason-lspconfig.nvim'},
+
+            -- LSP Support
+            {'neovim/nvim-lspconfig'},
+            -- Autocompletion
+            {'hrsh7th/nvim-cmp'},
+            {'hrsh7th/cmp-nvim-lsp'},
+            {'L3MON4D3/LuaSnip'},
+        }
     }
-    use "ThePrimeagen/harpoon"
     use "github/copilot.vim"
 end)
+
