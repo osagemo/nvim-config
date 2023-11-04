@@ -11,8 +11,9 @@ return require("packer").startup(function()
     use "nvim-telescope/telescope.nvim"
     use "nvim-telescope/telescope-media-files.nvim"
     use "nvim-telescope/telescope-file-browser.nvim"
-    use { 'nvim-telescope/telescope-fzf-native.nvim',
-        run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+    -- use { 'nvim-telescope/telescope-fzf-native.nvim',
+    --     run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     use "dinhhuy258/git.nvim" -- For git blame & browse
     use "neovim/nvim-lspconfig"
     use "hrsh7th/cmp-nvim-lsp"
@@ -20,7 +21,7 @@ return require("packer").startup(function()
     use "hrsh7th/nvim-cmp"
     use "jose-elias-alvarez/null-ls.nvim"
     use "onsails/lspkind-nvim" -- vscode-like pictograms
-    use "glepnir/lspsaga.nvim" -- LSP UIs
+    -- use "glepnir/lspsaga.nvim" -- LSP UIs
     use "terrortylor/nvim-comment"
     use 'JoosepAlviste/nvim-ts-context-commentstring'
     use "L3MON4D3/LuaSnip"
