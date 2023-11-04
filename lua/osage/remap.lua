@@ -1,5 +1,4 @@
 local is_win = require("osage.util").is_win
-
 -- Different \ binding on my linux US-ANSI keyboard layout for now
 local commentKey
 if not is_win then
@@ -69,8 +68,8 @@ vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 -- Quickfix list
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
--- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
--- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- Replace all occurrences in file
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])

@@ -9,7 +9,6 @@ return require('packer').startup(function(use)
         -- or                            , branch = '0.1.x',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
-    use({ 'rose-pine/neovim', as = 'rose-pine' })
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use 'theprimeagen/harpoon'
     use 'mbbill/undotree'
@@ -30,5 +29,19 @@ return require('packer').startup(function(use)
         }
     }
     use "github/copilot.vim"
+    -- Enables :CommentToggle used by keybindings
+    use "terrortylor/nvim-comment"
+    -- Shows context when scrolling
+    use("romgrk/nvim-treesitter-context")
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    }
+
+
+
+    -- Themes
+    use({ 'rose-pine/neovim', as = 'rose-pine' })
+    use "folke/tokyonight.nvim"
 end)
 

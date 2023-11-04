@@ -3,45 +3,45 @@ local lsp = require("lsp-zero")
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {
-    'tsserver',
-    'rust_analyzer',
-    'html',
-    'eslint',
-    'gopls',
-    'cssls',
-    'jsonls',
-    'yamlls',
-    'vimls',
-    'bashls',
-    'dockerls',
-    'tailwindcss',
-    'csharp_ls',
-},
-  handlers = {
-    lsp.default_setup,
-    lua_ls = function()
-      local lua_opts = lsp.nvim_lua_ls()
-      require('lspconfig').lua_ls.setup(lua_opts)
-    end,
-  }
+    ensure_installed = {
+        'tsserver',
+        'rust_analyzer',
+        'html',
+        'eslint',
+        'gopls',
+        'cssls',
+        'jsonls',
+        'yamlls',
+        'vimls',
+        'bashls',
+        'dockerls',
+        'tailwindcss',
+        'csharp_ls',
+    },
+    handlers = {
+        lsp.default_setup,
+        lua_ls = function()
+            local lua_opts = lsp.nvim_lua_ls()
+            require('lspconfig').lua_ls.setup(lua_opts)
+        end,
+    }
 })
 
 local cmp = require('cmp')
-local cmp_select = {behavior = cmp.SelectBehavior.Select}
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
 cmp.setup({
-  sources = {
-    {name = 'path'},
-    {name = 'nvim_lsp'},
-    {name = 'nvim_lua'},
-  },
-  formatting = lsp.cmp_format(),
-  mapping = cmp.mapping.preset.insert({
---    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
---    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-  }),
+    sources = {
+        { name = 'path' },
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lua' },
+    },
+    formatting = lsp.cmp_format(),
+    mapping = cmp.mapping.preset.insert({
+        --    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+        --    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        ['<C-Space>'] = cmp.mapping.complete(),
+    }),
 })
 
 lsp.set_preferences({
@@ -49,8 +49,23 @@ lsp.set_preferences({
     sign_icons = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 })
 
+local enable_format_on_save = function(_, bufnr)
+    vim.api.nvim_clear_autocmds({ group = augroup_format, buffer = bufnr })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup_format,
+        buffer = bufnr,
+        callback = function()
+            if vim.lsp.buf.format then
+                vim.lsp.buf.format({ bufnr = bufnr })
+            elseif vim.lsp.buf.formatting then
+                vim.lsp.buf.formatting({ bufnr = bufnr })
+            end
+        end,
+    })
+end
+
 lsp.on_attach(function(client, bufnr)
-    local opts = {buffer = bufnr, remap = false}
+    local opts = { buffer = bufnr, remap = false }
 
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts)
@@ -58,12 +73,25 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+    vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist)
     vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
     vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
     vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
     vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-k>", function() vim.lsp.buf.signature_help() end, opts)
+
+    -- Create a command `:Format` local to the LSP buffer
+    vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+        if vim.lsp.buf.format then
+            vim.lsp.buf.format()
+        elseif vim.lsp.buf.formatting then
+            vim.lsp.buf.formatting()
+        end
+    end, { desc = 'Format current buffer with LSP' })
+    -- format on save
+    enable_format_on_save(client, bufnr)
 end)
+
 
 lsp.setup()
 
