@@ -20,3 +20,8 @@ Install
 5. Install a patched font: https://www.nerdfonts.com/font-downloads
 6. Start nvim, run :PackerSync and :TSUpdate
 
+For multiple configs, use a script like:
+`
+#!/bin/sh
+exec env NVIM_APPNAME=nvim-old nvim "$@"
+`
