@@ -37,10 +37,14 @@ cmp.setup({
     },
     formatting = lsp.cmp_format(),
     mapping = cmp.mapping.preset.insert({
-        --    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-        --    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-i>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.close(),
+        ['<CR>'] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true
+        }),
     }),
 })
 
