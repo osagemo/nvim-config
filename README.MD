@@ -2,12 +2,10 @@
 This configuration was created in parallel on windows/linux machines
 
 ### Todos
-- [ ] Refactor folder/file structure
-- [ ] Add automatic management of language servers via e.g. mason
 - [ ] Further modifications of CMP to aid better with Reaact component props
 - [ ] Experiment with debuggers
 
-Install
+Install (not tested since rewriting):
 1. (Windows) Install mingw `choco install mingw` 
 2. (Install cmake and fzf for telescope-fzf-native)
 3. Install packer: https://github.com/wbthomason/packer.nvim

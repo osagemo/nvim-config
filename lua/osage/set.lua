@@ -6,7 +6,7 @@ if is_win then
     vim.cmd('set shellcmdflag=-c')
 end
 
-vim.api.nvim_exec ('language en_US', true)
+vim.api.nvim_exec('language en_US.UTF8', true)
 vim.opt.guicursor = ""
 
 vim.opt.nu = true

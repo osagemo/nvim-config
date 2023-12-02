@@ -32,7 +32,7 @@ return require('packer').startup(function(use)
     -- Enables :CommentToggle used by keybindings
     use "terrortylor/nvim-comment"
     -- Shows context when scrolling
-    use("romgrk/nvim-treesitter-context")
+    use("nvim-treesitter/nvim-treesitter-context")
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
