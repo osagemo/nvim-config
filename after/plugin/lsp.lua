@@ -125,4 +125,13 @@ if is_win then
         ),
         settings = { format = false },
     }
+    require("lspconfig").tsserver.setup {
+        cmd = { "typescript-language-server.cmd", "--stdio" }
+    }
+    require("lspconfig").tailwindcss.setup {
+        cmd = { "tailwindcss-language-server.cmd", "--stdio" }
+    }
+    require("lspconfig").yamlls.setup {
+        cmd = { "yaml-language-server.cmd", "--stdio" }
+    }
 end
