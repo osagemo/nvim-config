@@ -4,7 +4,7 @@ local lsp = require("lsp-zero")
 require('mason').setup({})
 require('mason-lspconfig').setup({
     ensure_installed = {
-        'tsserver',
+        'ts_ls',
         'rust_analyzer',
         'html',
         'eslint',
@@ -82,8 +82,8 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
     vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist)
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
+    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
     vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
     vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-k>", function() vim.lsp.buf.signature_help() end, opts)
@@ -125,7 +125,7 @@ if is_win then
         ),
         settings = { format = false },
     }
-    require("lspconfig").tsserver.setup {
+    require("lspconfig").ts_ls.setup {
         cmd = { "typescript-language-server.cmd", "--stdio" }
     }
     require("lspconfig").tailwindcss.setup {
