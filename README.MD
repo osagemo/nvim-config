@@ -9,6 +9,7 @@ Install (not tested since rewriting):
 1. (Windows) Install mingw `choco install mingw` 
 2. (Install cmake and fzf for telescope-fzf-native)
 3. Install packer: https://github.com/wbthomason/packer.nvim
+       :so packer.lua if Packer commands don't work on first run
 4. Install language servers:
 5.     sudo npm install -g typescript typescript-language-server
        sudo npm install -g @tailwindcss/language-server
