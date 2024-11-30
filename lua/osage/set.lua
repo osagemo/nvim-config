@@ -3,6 +3,8 @@ local is_win = require("osage.util").is_win
 -- Allows ! commands to work with git bash in windows
 if is_win then
     vim.cmd('set shell=bash.exe')
+    vim.cmd('set shellquote="')
+    vim.cmd('set shellxquote=')
     vim.cmd('set shellcmdflag=-c')
 end
 
