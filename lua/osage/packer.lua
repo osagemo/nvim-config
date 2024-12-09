@@ -38,7 +38,18 @@ return require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
 
+    use({
+        "olimorris/codecompanion.nvim",
+        config = function()
+            require("codecompanion").setup()
+        end,
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        }
+    })
 
+    use "sphamba/smear-cursor.nvim"
 
     -- Themes
     use({ 'rose-pine/neovim', as = 'rose-pine' })
