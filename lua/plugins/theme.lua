@@ -1,7 +1,9 @@
-vim.cmd("colorscheme tokyonight")
-
 return {
-    "folke/tokyonight.nvim",
+    { "folke/tokyonight.nvim",
+        config = function()
+            vim.cmd("colorscheme tokyonight")
+        end,
+    },
     {
         "sphamba/smear-cursor.nvim",
         opts = {

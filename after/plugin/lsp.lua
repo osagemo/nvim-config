@@ -1,6 +1,32 @@
 local is_win = require("osage.util").is_win
 local lsp = require("lsp-zero")
 
+require('mason').setup({})
+require('mason-lspconfig').setup({
+    ensure_installed = {
+        'ts_ls',
+        'rust_analyzer',
+        'html',
+        'eslint',
+        'gopls',
+        'cssls',
+        'jsonls',
+        'yamlls',
+        'vimls',
+        'bashls',
+        'dockerls',
+        'tailwindcss',
+        'csharp_ls',
+    },
+    handlers = {
+        lsp.default_setup,
+        lua_ls = function()
+            local lua_opts = lsp.nvim_lua_ls()
+            require('lspconfig').lua_ls.setup(lua_opts)
+        end,
+    }
+})
+
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 cmp.setup({
