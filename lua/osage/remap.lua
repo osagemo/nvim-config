@@ -15,6 +15,10 @@ vim.keymap.set("n", "Q", "<nop>")
 -- Files
 vim.keymap.set("n", "<Leader>o", vim.cmd.Ex)
 vim.keymap.set("n", "<Leader>e", "<cmd>lua MiniFiles.open()<CR>")
+vim.keymap.set("n", "<leader>t", function()
+    MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
+    MiniFiles.reveal_cwd()
+end)
 
 -- Clipboard yank/paste
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
@@ -94,3 +98,37 @@ local toggle_qf = function()
 end
 
 vim.keymap.set("n", "<leader>q", toggle_qf)
+
+-- AI
+vim.keymap.set("n", "<M-a>", "<cmd>CodeCompanionActions<cr>")
+vim.keymap.set("v", "<M-a>", "<cmd>CodeCompanionActions<cr>")
+vim.keymap.set("n", "<C-a>", "<cmd>CodeCompanionChat Toggle<cr>")
+vim.keymap.set("v", "<C-a>", "<cmd>CodeCompanionChat Toggle<cr>")
+vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>")
+
+-- Harpoon
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
+
+vim.keymap.set("n", "<Leader>a", mark.add_file)
+vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+
+vim.keymap.set("n", "<Leader>j", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<Leader>k", function() ui.nav_file(2) end)
+vim.keymap.set("n", "<Leader>l", function() ui.nav_file(3) end)
+vim.keymap.set("n", "<Leader>;", function() ui.nav_file(4) end)
+
+-- Telescope
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<C-p>', builtin.find_files, {})
+vim.keymap.set('n', '<C-gp>', builtin.git_files, {})
+vim.keymap.set('n', '<Leader>gw', function()
+    builtin.grep_string({ search = vim.fn.input("Grep > ") })
+end)
+
+vim.keymap.set('n', '<c-f>', builtin.live_grep, {})
+--vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+--vim.keymap.set('n', '
+
+-- UndoTree
+vim.keymap.set("n", "<Leader>u", vim.cmd.UndotreeToggle)
