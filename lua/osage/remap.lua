@@ -12,8 +12,9 @@ end
 -- Disable
 vim.keymap.set("n", "Q", "<nop>")
 
--- Ex
+-- Files
 vim.keymap.set("n", "<Leader>o", vim.cmd.Ex)
+vim.keymap.set("n", "<Leader>e", "<cmd>lua MiniFiles.open()<CR>")
 
 -- Clipboard yank/paste
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
@@ -45,7 +46,7 @@ vim.keymap.set("n", 'tc', ':tabc<cr>')
 vim.keymap.set("n", 'ss', ':split<Return><C-w>w')
 vim.keymap.set("n", 'sv', ':vsplit<Return><C-w>w')
 
--- Move window
+-- Move window Focus
 vim.keymap.set("n", '<Space>', '<C-w>w')
 vim.keymap.set('', 'sh', '<C-w>h')
 vim.keymap.set('', 'sk', '<C-w>k')
@@ -72,8 +73,9 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 -- Quickfix list
 vim.keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+-- Currently not used, shortcuts are used by Harpoon
+-- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 local toggle_qf = function()
     local qf_exists = false

@@ -7,8 +7,9 @@ return require('packer').startup(function(use)
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.4',
         -- or                            , branch = '0.1.x',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        requires = { { 'nvim-lua/plenary.nvim' } }
     }
+    use { 'echasnovski/mini.icons', version = '*' }
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use 'theprimeagen/harpoon'
     use 'mbbill/undotree'
@@ -17,27 +18,29 @@ return require('packer').startup(function(use)
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v3.x',
         requires = {
-            {'williamboman/mason.nvim'},
-            {'williamboman/mason-lspconfig.nvim'},
+            { 'williamboman/mason.nvim' },
+            { 'williamboman/mason-lspconfig.nvim' },
 
             -- LSP Support
-            {'neovim/nvim-lspconfig'},
+            { 'neovim/nvim-lspconfig' },
             -- Autocompletion
-            {'hrsh7th/nvim-cmp'},
-            {'hrsh7th/cmp-nvim-lsp'},
-            {'L3MON4D3/LuaSnip'},
+            { 'hrsh7th/nvim-cmp' },
+            { 'hrsh7th/cmp-nvim-lsp' },
+            { 'L3MON4D3/LuaSnip' },
         }
     }
-    use "github/copilot.vim"
+
     -- Enables :CommentToggle used by keybindings
     use "terrortylor/nvim-comment"
+
     -- Shows context when scrolling
     use("nvim-treesitter/nvim-treesitter-context")
     use {
         'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
 
+    -- AI Integration
+    use "github/copilot.vim"
     use({
         "olimorris/codecompanion.nvim",
         config = function()
@@ -50,9 +53,18 @@ return require('packer').startup(function(use)
     })
 
     use "sphamba/smear-cursor.nvim"
+    use { 'echasnovski/mini.files', version = '*' }
+    use({
+        'MeanderingProgrammer/render-markdown.nvim',
+        after = { 'nvim-treesitter' },
+        requires = { 'echasnovski/mini.icons', opt = true },
+        ft = { "markdown", "codecompanion" },
+        config = function()
+            require('render-markdown').setup()
+        end,
+    })
 
     -- Themes
     use({ 'rose-pine/neovim', as = 'rose-pine' })
     use "folke/tokyonight.nvim"
 end)
-

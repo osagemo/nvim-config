@@ -20,7 +20,7 @@ Install (not tested since rewriting):
 6. Start nvim, run :PackerSync and :TSUpdate
 
 For multiple configs, use a script like:
-`
+```bash
 #!/bin/sh
 exec env NVIM_APPNAME=nvim-old nvim "$@"
-`
+```

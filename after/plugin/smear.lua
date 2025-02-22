@@ -1,4 +1,3 @@
-
 require('smear_cursor').setup({
     enabled = true,
 
@@ -11,8 +10,8 @@ require('smear_cursor').setup({
     -- volume_reduction_exponent = -0.1,
 
     -- Faster config               -- Default  Range
-    -- stiffness = 0.8,               -- 0.6      [0, 1]
-    -- trailing_stiffness = 0.5,      -- 0.3      [0, 1]
-    -- distance_stop_animating = 0.5, -- 0.1      > 0
-    -- hide_target_hack = false,      -- true     boolean
+    stiffness = 0.8, -- 0.6      [0, 1]
+    trailing_stiffness = 0.5, -- 0.3      [0, 1]
+    distance_stop_animating = 0.5, -- 0.1      > 0
+    hide_target_hack = false, -- true     boolean
 })
