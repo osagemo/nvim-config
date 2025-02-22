@@ -99,13 +99,6 @@ end
 
 vim.keymap.set("n", "<leader>q", toggle_qf)
 
--- AI
-vim.keymap.set("n", "<M-a>", "<cmd>CodeCompanionActions<cr>")
-vim.keymap.set("v", "<M-a>", "<cmd>CodeCompanionActions<cr>")
-vim.keymap.set("n", "<C-a>", "<cmd>CodeCompanionChat Toggle<cr>")
-vim.keymap.set("v", "<C-a>", "<cmd>CodeCompanionChat Toggle<cr>")
-vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>")
-
 -- Harpoon
 local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")

@@ -51,7 +51,12 @@ return {
     'mbbill/undotree',
 
     -- Enables :CommentToggle d by keybindings
-    "terrortylor/nvim-comment",
+    {
+        "terrortylor/nvim-comment",
+        config = function()
+            require('nvim_comment').setup()
+        end
+    },
 
     -- Shows context when scrolling
     "nvim-treesitter/nvim-treesitter-context",
