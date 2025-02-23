@@ -9,7 +9,7 @@ if is_win then
     vim.opt.shellslash = true
 end
 
-vim.api.nvim_exec('language en_US.UTF8', true)
+vim.api.nvim_exec2('language en_US.UTF8', { output = true })
 -- vim.opt.guicursor = ""
 
 vim.opt.nu = true

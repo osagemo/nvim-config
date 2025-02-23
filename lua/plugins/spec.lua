@@ -1,5 +1,10 @@
 return {
-    -- LSP & Navigation
+    -- Navigation
+    {
+        'nvim-telescope/telescope.nvim',
+        dependencies = { { 'nvim-lua/plenary.nvim' }, },
+    },
+    'theprimeagen/harpoon',
     { 'echasnovski/mini.icons', version = '*',
         config = function()
             require('mini.icons').setup()
@@ -15,40 +20,36 @@ return {
                 MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
                 MiniFiles.reveal_cwd()
             end)
+
+            local map_split = function(buf_id, lhs, direction)
+                local rhs = function()
+                    -- Make new window and set it as target
+                    local new_target_window
+                    vim.api.nvim_win_call(MiniFiles.get_explorer_state().target_window, function()
+                        vim.cmd(direction .. ' split')
+                        new_target_window = vim.api.nvim_get_current_win()
+                    end)
+
+                    MiniFiles.set_target_window(new_target_window)
+                end
+
+                -- Adding `desc` will result into `show_help` entries
+                local desc = 'Split ' .. direction
+                vim.keymap.set('n', lhs, rhs, { buffer = buf_id, desc = desc })
+            end
+
+            vim.api.nvim_create_autocmd('User', {
+                pattern = 'MiniFilesBufferCreate',
+                callback = function(args)
+                    local buf_id = args.data.buf_id
+                    -- Tweak keys to your liking
+                    map_split(buf_id, 'gs', 'belowright horizontal')
+                    map_split(buf_id, 'gv', 'belowright vertical')
+                end,
+            })
         end
     },
-    { 'echasnovski/mini.colors',
-
-    },
-
-    {
-        'nvim-telescope/telescope.nvim',
-        dependencies = { { 'nvim-lua/plenary.nvim' }, },
-    },
-    'theprimeagen/harpoon',
-
-    {
-        "williamboman/mason.nvim",
-        config = function()
-            require('mason').setup()
-        end
-    },
-    {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v3.x',
-        dependencies = {
-            { 'williamboman/mason.nvim' },
-            { 'williamboman/mason-lspconfig.nvim' },
-
-            -- LSP Support
-            { 'neovim/nvim-lspconfig' },
-            -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },
-            { 'hrsh7th/cmp-nvim-lsp' },
-            { 'L3MON4D3/LuaSnip' },
-        },
-    },
-
+    -- 'echasnovski/mini.colors',
     {
         'nvim-lualine/lualine.nvim',
         opts = {
@@ -61,6 +62,8 @@ return {
             },
         }
     },
+
+    -- Undo history visualizer
     'mbbill/undotree',
 
     -- Enables :CommentToggle d by keybindings
@@ -85,4 +88,13 @@ return {
             },
         },
     },
+
+    {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+        require("nvim-surround").setup()
+    end
+}
 }
