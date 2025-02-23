@@ -10,34 +10,32 @@ return {
             { noremap = true, silent = true })
 
     end },
-}
 
--- Couldnt get any floating terminals to work on windows. :term works but these always open WSL
--- return {
---     { 'akinsho/toggleterm.nvim', version = "*", init = function()
---     end,
---         config = function()
---             print(vim.opt.shell:get())
---             print(vim.opt.shellcmdflag:get())
---             print(vim.opt.shellxquote:get())
---             print(vim.opt.shellslash:get())
---             -- vim.cmd [[let &shellcmdflag = '-s']]
---             require("toggleterm").setup({
---                 --open_mapping = '<C-\\>',
---                 start_in_insert = true,
---                 direction = 'float',
---                 close_on_exit = false,
---             })
---
---             local Terminal = require('toggleterm.terminal').Terminal
---             local lazygit  = Terminal:new({ cmd = "lazygit", hidden = true })
---
---             function _lazygit_toggle()
---                 lazygit:toggle()
---             end
---
---             vim.api.nvim_set_keymap("n", "<leader>gl", "<cmd>lua _lazygit_toggle()<CR>",
---                 { noremap = true, silent = true })
---
---         end }
--- }
+    { 'akinsho/toggleterm.nvim', version = "*", init = function()
+    end,
+        config = function()
+            require("toggleterm").setup({
+                open_mapping = '<C-\\>',
+                start_in_insert = true,
+                direction = 'float',
+                close_on_exit = true,
+            })
+
+
+            function ToggleTermWithShellFlag()
+                -- Set shellcmdflag to '-s' for interactive terminal
+                vim.opt.shellcmdflag = '-s'
+
+                vim.cmd('ToggleTerm cmd="lazygit')
+
+                -- Set shellcmdflag back to '-c' for normal command execution
+                vim.opt.shellcmdflag = '-c'
+            end
+
+            vim.api.nvim_create_user_command('ToggleTermWithFlag', ToggleTermWithShellFlag, {})
+
+            vim.api.nvim_set_keymap("n", "<leader>ot", "<cmd>ToggleTermWithFlag<CR>",
+                { noremap = true, silent = true })
+
+        end }
+}

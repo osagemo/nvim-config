@@ -12,7 +12,7 @@ end
 -- Disable
 vim.keymap.set("n", "Q", "<nop>")
 
-vim.keymap.set("n", "<Leader>o", vim.cmd.Ex)
+-- vim.keymap.set("n", "<Leader>o", vim.cmd.Ex)
 
 -- Clipboard yank/paste
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])

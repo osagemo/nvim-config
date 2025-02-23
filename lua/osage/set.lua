@@ -2,8 +2,7 @@ local is_win = require("osage.util").is_win
 
 if is_win then
     -- Allows !commands and e.g. diffs to work with git bash in windows
-    vim.opt.shell = "bash.exe"
-    vim.g.toggleterm_shell = 'bash.exe'
+    vim.opt.shell = '"C:\\Program Files\\Git\\usr\\bin\\bash.exe"'
     vim.opt.shellcmdflag = "-c"
     -- vim.opt.shellquote = ""
     vim.opt.shellxquote = "("
