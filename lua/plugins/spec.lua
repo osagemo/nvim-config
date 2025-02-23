@@ -6,7 +6,20 @@ return {
             require('mini.icons').mock_nvim_web_devicons()
         end
     },
-    { 'echasnovski/mini.files', version = '*' },
+    { 'echasnovski/mini.files',
+        version = '*',
+        config = function()
+            require('mini.files').setup()
+            vim.keymap.set("n", "<Leader>e", "<cmd>lua MiniFiles.open()<CR>")
+            vim.keymap.set("n", "<leader>t", function()
+                MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
+                MiniFiles.reveal_cwd()
+            end)
+        end
+    },
+    { 'echasnovski/mini.colors',
+
+    },
 
     {
         'nvim-telescope/telescope.nvim',

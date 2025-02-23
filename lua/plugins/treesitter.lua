@@ -7,6 +7,12 @@ return {
             -- A list of parser names, or "all"
             ensure_installed = {
                 "c",
+                "diff",
+                "gitcommit",
+                "git_rebase",
+                "gitignore",
+                "gitattributes",
+                "git_config",
                 "lua",
                 "vim",
                 "vimdoc",

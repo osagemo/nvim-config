@@ -12,13 +12,7 @@ end
 -- Disable
 vim.keymap.set("n", "Q", "<nop>")
 
--- Files
 vim.keymap.set("n", "<Leader>o", vim.cmd.Ex)
-vim.keymap.set("n", "<Leader>e", "<cmd>lua MiniFiles.open()<CR>")
-vim.keymap.set("n", "<leader>t", function()
-    MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
-    MiniFiles.reveal_cwd()
-end)
 
 -- Clipboard yank/paste
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
