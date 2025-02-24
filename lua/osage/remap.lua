@@ -3,10 +3,8 @@ local is_win = require("osage.util").is_win
 local commentKey
 if not is_win then
     commentKey = "<C-_>"
-    vim.g.mapleader = '<'
 else
     commentKey = "<C-_>"
-    vim.g.mapleader = ' '
 end
 
 -- Disable

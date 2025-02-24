@@ -29,7 +29,9 @@ return {
     {
         'williamboman/mason.nvim',
         lazy = false,
-        opts = {},
+        config = function()
+            require('mason').setup()
+        end
     },
 
     -- Autocompletion
@@ -131,6 +133,7 @@ return {
                     'gopls',
                     'cssls',
                     'jsonls',
+                    'lua_ls',
                     'yamlls',
                     'vimls',
                     'bashls',

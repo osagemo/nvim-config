@@ -1,3 +1,5 @@
+local is_win = require("osage.util").is_win
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -18,7 +20,11 @@ vim.opt.rtp:prepend(lazypath)
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = " "
+if not is_win then
+    vim.g.mapleader = '<'
+else
+    vim.g.mapleader = ' '
+end
 vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
