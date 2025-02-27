@@ -2,10 +2,11 @@
 This configuration was created in parallel on windows/linux machines
 
 ### Todos
-- [ ] Further modifications of CMP to aid better with Reaact component props
+- [ ] Rewrite install instructions 
+- [ ] Further modifications of CMP to aid better with React component props
 - [ ] Experiment with debuggers
 
-Install (not tested since rewriting):
+#### Deprecated install instructions
 1. (Windows) Install mingw `choco install mingw` 
 2. (Install cmake and fzf for telescope-fzf-native)
 3. Install packer: https://github.com/wbthomason/packer.nvim
