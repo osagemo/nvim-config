@@ -19,7 +19,7 @@ return {
         end
 
         vim.api.nvim_create_user_command('ToggleTermWithFlag', ToggleTermWithShellFlag, {})
-
+        -- Exit term with <C-\> (+ <C-n> in term)
         vim.api.nvim_set_keymap("n", "<leader>ot", "<cmd>ToggleTermWithFlag<CR>",
             { noremap = true, silent = true })
 
