@@ -1,4 +1,6 @@
 local is_win = require("osage.util").is_win
+local telescope = require('telescope.builtin')
+
 -- Different \ binding on my linux US-ANSI keyboard layout for now
 local commentKey
 if not is_win then
@@ -32,6 +34,14 @@ vim.keymap.set("i", commentKey, "<C-o><cmd>CommentToggle<CR><C-o>A")
 vim.keymap.set("n", commentKey, "<cmd>CommentToggle<CR>")
 vim.keymap.set("v", commentKey, ":<C-u>call CommentOperator(visualmode())<CR>")
 -- vim.keymap.set("n","<C-E>", "<cmd>NvimTreeToggle<CR>")
+
+-- Buffer
+vim.keymap.set('n', '<leader>b', function()
+    telescope.buffers({
+        sort_mru = true,
+        ignore_current_buffer = true,
+    })
+end, { desc = 'Find buffers' })
 
 -- Tabs
 vim.keymap.set("n", 'te', ':tabedit<cr>')
@@ -115,6 +125,12 @@ vim.keymap.set('n', '<C-gp>', builtin.git_files, {})
 vim.keymap.set('n', '<Leader>gw', function()
     builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end)
+vim.keymap.set('n', '<leader>fp', function()
+    builtin.find_files({
+        hidden = true,
+        file_ignore_patterns = { "%.git/" }
+    })
+end, {})
 
 vim.keymap.set('n', '<c-f>', builtin.live_grep, {})
 --vim.keymap.set('n', '<leader>fb', builtin.buffers, {})

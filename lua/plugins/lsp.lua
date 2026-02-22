@@ -166,6 +166,19 @@ return {
                 }
             })
 
+            require("lspconfig").eslint.setup {
+                root_dir = require("lspconfig.util").root_pattern(
+                    ".eslintrc",
+                    ".eslintrc.js",
+                    ".eslintrc.cjs",
+                    ".eslintrc.yaml",
+                    ".eslintrc.yml",
+                    ".eslintrc.json",
+                    "package.json",
+                    ".git"
+                ),
+                settings = { format = false },
+            }
             if is_win then
                 require("lspconfig").html.setup {
                     cmd = { "vscode-css-language-server.cmd", "--stdio" }
