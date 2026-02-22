@@ -1,30 +1,5 @@
 local is_win = require("osage.util").is_win
 
--- return {
---     "neovim/nvim-lspconfig",
---     dependencies = {
---         "williamboman/mason.nvim",
---         "williamboman/mason-lspconfig.nvim",
---         "hrsh7th/cmp-nvim-lsp",
---         "hrsh7th/cmp-buffer",
---         "hrsh7th/cmp-path",
---         "hrsh7th/cmp-cmdline",
---         "hrsh7th/nvim-cmp",
---         "L3MON4D3/LuaSnip",
---         "saadparwaiz1/cmp_luasnip",
---         "j-hui/fidget.nvim",
---     },
---
---     config = function()
---         local cmp = require('cmp')
---         local cmp_lsp = require("cmp_nvim_lsp")
---
---         require("fidget").setup({})
---         require('mason').setup()
---         require('mason-lspconfig').setup()
---     end
--- }
-
 return {
     {
         'williamboman/mason.nvim',
@@ -88,18 +63,173 @@ return {
             { "j-hui/fidget.nvim" },
         },
         config = function()
-            local lsp_defaults = require('lspconfig').util.default_config
+            local capabilities = require('cmp_nvim_lsp').default_capabilities()
+            local mod_cache = nil
 
-            -- Add cmp_nvim_lsp capabilities settings to lspconfig
-            -- This should be executed before you configure any language server
-            lsp_defaults.capabilities = vim.tbl_deep_extend(
-                'force',
-                lsp_defaults.capabilities,
-                require('cmp_nvim_lsp').default_capabilities()
-            )
+            local function root_dir_with_patterns(fname, patterns)
+                local match = vim.fs.find(patterns, { upward = true, path = fname })[1]
+                if match then
+                    return vim.fs.dirname(match)
+                end
+                return nil
+            end
 
-            -- LspAttach is where you enable features that only work
-            -- if there is a language server active in the file
+            local win_cmds = {}
+            if is_win then
+                win_cmds = {
+                    html = { "vscode-html-language-server.cmd", "--stdio" },
+                    cssls = { "vscode-css-language-server.cmd", "--stdio" },
+                    eslint = { "vscode-eslint-language-server.cmd", "--stdio" },
+                    ts_ls = { "typescript-language-server.cmd", "--stdio" },
+                    tailwindcss = { "tailwindcss-language-server.cmd", "--stdio" },
+                    yamlls = { "yaml-language-server.cmd", "--stdio" },
+                    jsonls = { "vscode-json-language-server.cmd", "--stdio" },
+                }
+            end
+
+            vim.lsp.config.gopls = {
+                cmd = { "gopls" },
+                filetypes = { "go", "gomod", "gowork", "gotmpl" },
+                root_dir = function(bufnr, on_dir)
+                    local fname = vim.api.nvim_buf_get_name(bufnr)
+                    if fname == "" then
+                        return
+                    end
+                    if not mod_cache then
+                        local result = vim.fn.systemlist({ "go", "env", "GOMODCACHE" })
+                        if result and result[1] then
+                            mod_cache = vim.trim(result[1])
+                        end
+                    end
+                    if mod_cache and fname:sub(1, #mod_cache) == mod_cache then
+                        local clients = vim.lsp.get_clients({ name = "gopls" })
+                        if #clients > 0 then
+                            on_dir(clients[#clients].config.root_dir)
+                            return
+                        end
+                    end
+                    local root = vim.fs.root(fname, { "go.work", "go.mod", ".git" })
+                    on_dir(root or vim.fs.dirname(fname))
+                end,
+                single_file_support = true,
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.lua_ls = {
+                cmd = { "lua-language-server" },
+                filetypes = { "lua" },
+                root_markers = { { ".luarc.json", ".luarc.jsonc" }, ".git" },
+                settings = {
+                    Lua = {
+                        diagnostics = {
+                            globals = { "vim", "it", "describe", "before_each", "after_each" },
+                        },
+                    },
+                },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.eslint = {
+                cmd = win_cmds.eslint or { "vscode-eslint-language-server", "--stdio" },
+                filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
+                root_markers = {
+                    ".eslintrc",
+                    ".eslintrc.js",
+                    ".eslintrc.cjs",
+                    ".eslintrc.yaml",
+                    ".eslintrc.yml",
+                    ".eslintrc.json",
+                    "package.json",
+                    ".git",
+                },
+                settings = { format = false },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.html = {
+                cmd = win_cmds.html or { "vscode-html-language-server", "--stdio" },
+                filetypes = { "html" },
+                root_markers = { "package.json", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.ts_ls = {
+                cmd = win_cmds.ts_ls or { "typescript-language-server", "--stdio" },
+                filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+                root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.tailwindcss = {
+                cmd = win_cmds.tailwindcss or { "tailwindcss-language-server", "--stdio" },
+                filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+                root_markers = { "tailwind.config.js", "tailwind.config.cjs", "tailwind.config.mjs", "package.json", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.yamlls = {
+                cmd = win_cmds.yamlls or { "yaml-language-server", "--stdio" },
+                filetypes = { "yaml", "yml" },
+                root_markers = { "package.json", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.jsonls = {
+                cmd = win_cmds.jsonls or { "vscode-json-language-server", "--stdio" },
+                filetypes = { "json", "jsonc" },
+                root_markers = { "package.json", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.rust_analyzer = {
+                cmd = { "rust-analyzer" },
+                filetypes = { "rust" },
+                root_markers = { "Cargo.toml", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.cssls = {
+                cmd = win_cmds.cssls or { "vscode-css-language-server", "--stdio" },
+                filetypes = { "css", "scss", "less" },
+                root_markers = { "package.json", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.vimls = {
+                cmd = { "vim-language-server", "--stdio" },
+                filetypes = { "vim" },
+                root_markers = { ".vimrc", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.bashls = {
+                cmd = { "bash-language-server", "start" },
+                filetypes = { "sh", "bash", "zsh" },
+                root_markers = { ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.dockerls = {
+                cmd = { "docker-langserver", "--stdio" },
+                filetypes = { "dockerfile" },
+                root_markers = { "Dockerfile", ".git" },
+                capabilities = capabilities,
+            }
+
+            vim.lsp.config.csharp_ls = {
+                cmd = { "csharp-ls" },
+                filetypes = { "cs" },
+                root_dir = function(bufnr, on_dir)
+                    local fname = vim.api.nvim_buf_get_name(bufnr)
+                    if fname == "" then
+                        return
+                    end
+                    local root = root_dir_with_patterns(fname, { "*.sln", "*.csproj", ".git" })
+                    on_dir(root or vim.fs.dirname(fname))
+                end,
+                capabilities = capabilities,
+            }
+
             vim.api.nvim_create_autocmd('LspAttach', {
                 desc = 'LSP actions',
                 callback = function(event)
@@ -109,8 +239,7 @@ return {
                     vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
                     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
                     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-                    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float({ focusable = true }) end,
-                        opts)
+                    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float({ focusable = true }) end, opts)
                     vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist)
                     vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
                     vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
@@ -118,12 +247,12 @@ return {
                     vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
                     vim.keymap.set("i", "<C-k>", function() vim.lsp.buf.signature_help() end, opts)
 
-                    -- From lsp-zero docs
                     vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
                     vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
                     vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
                 end,
             })
+
             require("fidget").setup({})
             require('mason-lspconfig').setup({
                 ensure_installed = {
@@ -142,77 +271,26 @@ return {
                     'tailwindcss',
                     'csharp_ls',
                 },
-                handlers = {
-                    -- this first function is the "default handler"
-                    -- it applies to every language server without a "custom handler"
-                    function(server_name)
-                        require('lspconfig')[server_name].setup({})
-                    end,
-
-                    -- From Prime
-                    ["lua_ls"] = function()
-                        local lspconfig = require("lspconfig")
-                        lspconfig.lua_ls.setup {
-                            capabilities = capabilities,
-                            settings = {
-                                Lua = {
-                                    diagnostics = {
-                                        globals = { "vim", "it", "describe", "before_each", "after_each" },
-                                    }
-                                }
-                            }
-                        }
-                    end,
-                }
             })
 
-            require("lspconfig").eslint.setup {
-                root_dir = require("lspconfig.util").root_pattern(
-                    ".eslintrc",
-                    ".eslintrc.js",
-                    ".eslintrc.cjs",
-                    ".eslintrc.yaml",
-                    ".eslintrc.yml",
-                    ".eslintrc.json",
-                    "package.json",
-                    ".git"
-                ),
-                settings = { format = false },
-            }
-            if is_win then
-                require("lspconfig").html.setup {
-                    cmd = { "vscode-css-language-server.cmd", "--stdio" }
-                }
-                require("lspconfig").eslint.setup {
-                    cmd = { "vscode-eslint-language-server.cmd", "--stdio" },
-                    root_dir = require("lspconfig.util").root_pattern(
-                        ".eslintrc",
-                        ".eslintrc.js",
-                        ".eslintrc.cjs",
-                        ".eslintrc.yaml",
-                        ".eslintrc.yml",
-                        ".eslintrc.json",
-                        "package.json",
-                        ".git"
-                    ),
-                    settings = { format = false },
-                }
-                require("lspconfig").ts_ls.setup {
-                    cmd = { "typescript-language-server.cmd", "--stdio" }
-                }
-                require("lspconfig").tailwindcss.setup {
-                    cmd = { "tailwindcss-language-server.cmd", "--stdio" }
-                }
-                require("lspconfig").yamlls.setup {
-                    cmd = { "yaml-language-server.cmd", "--stdio" }
-                }
-                require 'lspconfig'.jsonls.setup {
-                    cmd = { "vscode-json-language-server.cmd", "--stdio" }
-                }
-            end
+            vim.lsp.enable({
+                'ts_ls',
+                'rust_analyzer',
+                'html',
+                'eslint',
+                'gopls',
+                'cssls',
+                'jsonls',
+                'lua_ls',
+                'yamlls',
+                'vimls',
+                'bashls',
+                'dockerls',
+                'tailwindcss',
+                'csharp_ls',
+            })
 
             vim.diagnostic.config({
-                -- update_in_insert = true,
                 float = {
                     focusable = false,
                     style = "minimal",
